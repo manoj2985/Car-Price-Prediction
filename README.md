@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CarDekho Used Car Price Prediction ML Model 🏎️💰
 
 Predicts used car selling price based on vehicle_age, km_driven, brand, fuel_type, etc.
@@ -54,3 +55,6 @@ price = predict_price(vehicle_age=5, km_driven=50000, brand='Maruti',
 **Data:** 15k+ CarDekho samples, no missing values.
 
 Enjoy predicting car prices! 🚀
+=======
+# Car-Price-Prediction
+>>>>>>> b030717167b02d18646c9062671b02ed53766129
