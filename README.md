@@ -1,4 +1,5 @@
-# CarDekho Used Car Price Prediction
+# Automotive Depreciation and Valuation Model
+
 
 A machine-learning project that estimates the selling price of a used car from its specifications. It includes a model-training pipeline, a Python prediction helper, and an interactive Streamlit dashboard for predictions, comparisons, and dataset exploration.
 
