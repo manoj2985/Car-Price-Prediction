@@ -1,60 +1,111 @@
-<<<<<<< HEAD
-# CarDekho Used Car Price Prediction ML Model 🏎️💰
+# CarDekho Used Car Price Prediction
 
-Predicts used car selling price based on vehicle_age, km_driven, brand, fuel_type, etc.
+A machine-learning project that estimates the selling price of a used car from its specifications. It includes a model-training pipeline, a Python prediction helper, and an interactive Streamlit dashboard for predictions, comparisons, and dataset exploration.
+
+## Features
+
+- Train and compare Linear Regression, Random Forest, and XGBoost models.
+- Preprocess numeric features with standard scaling.
+- Encode categorical features with one-hot encoding.
+- Predict prices after applying the inverse of the target's  log1p  transformation.
+- Explore the dataset and compare two cars in the Streamlit app.
+
+## Requirements
+
+- Python 3.9 or newer
+- The included  cardekho_dataset.csv  file
+
+Install the dependencies in a virtual environment:
+
+   bash
+python -m venv .venv
+
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+   
 
 ## Quick Start
-```bash
-pip install -r requirements.txt
-python train_model.py  # Trains and saves model.pkl + plots
-python prediction.py   # Test example prediction
 
-## 🚀 Premium Streamlit App
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
+### 1. Train the model
 
-**Features:**
-- 🔮 Single prediction with impact analysis
-- ⚖️ Compare 2 cars + AI recommendation (better value)
-- 📈 Dataset insights & visualizations
-- ⚙️ Live model retraining
+Run the training pipeline from the project directory:
 
-**Pro Tip:** Set vehicle_age=0, km_driven=100 for new car prices!
+   bash
+python train_model.py
+   
 
+This cleans the dataset, trains the candidate models with cross-validated parameter search, evaluates them, selects the model with the lowest RMSE, and writes:
 
-```
+   text
+car_price_model.pkl
+   
 
-## Files
-- `data_preprocessing.py`: EDA, encoding, scaling, train/test split
-- `model_training.py`: LinearRegression, RandomForest, XGBoost w/ GridSearchCV
-- `model_evaluation.py`: RMSE/MAE/R2 metrics + plots
-- `prediction.py`: Load model, predict new car price
-- `train_model.py`: Full pipeline orchestrator
+The generated model file is required for predictions and for the Streamlit dashboard. It is intentionally not committed to source control because it can be regenerated from the CSV dataset.
 
-## Expected Performance
-- Test RMSE: ~0.45-0.55 (log scale) → ~₹1-2L avg error
-- R²: 0.85-0.92
-- Feature importance: vehicle_age > km_driven > max_power > brand
+### 2. Try a command-line prediction
 
-## Prediction Example
-```python
+   bash
+python prediction.py
+   
+
+Or use the helper in another Python script:
+
+   python
 from prediction import predict_price
-price = predict_price(vehicle_age=5, km_driven=50000, brand='Maruti', 
-                      fuel_type='Petrol', transmission_type='Manual',
-                      mileage=18.5, engine=1200, max_power=80, seats=5)
-```
 
-## Model Pipeline
-1. Log-transform target (selling_price)
-2. OneHotEncode: seller_type, fuel_type, transmission_type, brand
-3. StandardScale: numerical features
-4. XGBoost (auto-selected best)
+price = predict_price(
+    vehicle_age=5,
+    km_driven=50000,
+    seller_type="Individual",
+    fuel_type="Petrol",
+    transmission_type="Manual",
+    mileage=18.5,
+    engine=1200,
+    max_power=80,
+    seats=5,
+    brand="Maruti",
+)
 
-**Data:** 15k+ CarDekho samples, no missing values.
+print(f"Estimated price: ₹{price:,.0f}")
+   
 
-Enjoy predicting car prices! 🚀
-=======
-# Car-Price-Prediction
->>>>>>> b030717167b02d18646c9062671b02ed53766129
+### 3. Launch the dashboard
+
+Train the model first, then start Streamlit:
+
+   bash
+streamlit run app.py
+   
+
+The dashboard provides single-car prediction, two-car comparison, visual dataset insights, and additional car-suggestion functionality.
+
+## Model Inputs
+
+The prediction API expects these fields:
+
+| Type | Features |
+| --- | --- |
+| Numeric |  vehicle_age ,  km_driven ,  mileage ,  engine ,  max_power ,  seats  |
+| Categorical |  seller_type ,  fuel_type ,  transmission_type ,  brand  |
+
+The target column is  selling_price . The preprocessing step removes the dataset index,  car_name , and  model , filters invalid seat counts, and applies  log1p  to the target before training.
+
+## Project Structure
+
+| File | Purpose |
+| --- | --- |
+|  app.py  | Streamlit dashboard and interactive visualizations |
+|  data_preprocessing.py  | Dataset cleaning, feature selection, encoding, scaling, and splitting |
+|  model_training.py  | Model training, grid search, evaluation, and artifact creation |
+|  model_evaluation.py  | Regression metrics and evaluation plots |
+|  prediction.py  | Load the trained artifact and estimate a car price |
+|  train_model.py  | End-to-end training entry point |
+|  cardekho_dataset.csv  | Training and exploration dataset |
+
+## Notes
+
+- Run commands from the repository root so the scripts can find the CSV and generated model file.
+- Model quality depends on the dataset and the selected features; retrain after changing the data.
+- Predictions are estimates for analysis and should not be treated as a vehicle appraisal or purchase guarantee.
